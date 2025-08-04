@@ -22,11 +22,6 @@ pipeline {
                 archiveArtifacts artifacts: 'target/release/zed.exe', followSymlinks: false
             }
         }
-        stage('Execute Zed executable') {
-            steps {
-                     bat "./target/release/zed.exe"
-            }
-        }
     }
 
     post {
