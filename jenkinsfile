@@ -14,13 +14,7 @@ pipeline {
         }
         stage('Build Zed'){
             steps {
-                script {
-                    def runCargo = { bat "cargo build --release" }.execute()
-                    runCargo.waitFor()
-                    if (runCargo.exitValue() != 0) {
-                        error "Cargo build failed"
-                    }
-                }
+                bat "cargo build --release"
             }
         }
         stage('store artifact') {
@@ -30,13 +24,7 @@ pipeline {
         }
         stage('Execute Zed executable') {
             steps {
-                script {
-                    def runZed = { bat "target/release/zed.exe" }.execute()
-                    runZed.waitFor()
-                    if (runZed.exitValue() != 0) {
-                        error "Zed execution failed"
-                    }
-                }
+                bat "target/release/zed.exe"
             }
         }
     }
