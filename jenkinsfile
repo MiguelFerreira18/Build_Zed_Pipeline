@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps{
-                    checkout scmGit(branches: [[name: :"*/${branch}"]], extensions: [], userRemoteConfigs: [[url: "${repo}"]])
+                checkout scmGit(branches: [[name: "*/${branch}"]], extensions: [], userRemoteConfigs: [[url: "${repo}"]])
             }
         }
         stage('Check directory'){
