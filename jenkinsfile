@@ -12,9 +12,16 @@ pipeline {
                 checkout scm           
             }
         }
+        stage('Check directory'){
+            steps{
+                bat 'dir'
+            }
+        }
         stage('Build Zed'){
             steps {
-                bat "cargo build --release"
+                dir ('./'){
+                    bat 'cargo build --release'
+                }
             }
         }
         stage('store artifact') {
@@ -24,7 +31,9 @@ pipeline {
         }
         stage('Execute Zed executable') {
             steps {
-                bat "target/release/zed.exe"
+                dir ('./') {
+                     bat "target/release/zed.exe"
+                }
             }
         }
     }
