@@ -12,16 +12,9 @@ pipeline {
                 checkout scmGit(branches: [[name: "*/${branch}"]], extensions: [], userRemoteConfigs: [[url: "${repo}"]])
             }
         }
-        stage('Check directory'){
-            steps{
-                bat 'dir'
-            }
-        }
         stage('Build Zed'){
             steps {
-                dir ('./'){
                     bat 'cargo build --release'
-                }
             }
         }
         stage('store artifact') {
@@ -31,9 +24,7 @@ pipeline {
         }
         stage('Execute Zed executable') {
             steps {
-                dir ('./') {
                      bat "target/release/zed.exe"
-                }
             }
         }
     }
