@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    environment {
+        branch = 'main'
+        repo = 'https://github.com/zed-industries/zed.git'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps{
+                checkout scm           
+            }
+        }
+        stage('Build Zed'){
+            steps {
+                script {
+                    def runCargo = { bat "cargo build --release" }.execute()
+                    runCargo.waitFor()
+                    if (runCargo.exitValue() != 0) {
+                        error "Cargo build failed"
+                    }
+                }
+            }
+        }
+        stage('store artifact') {
+            steps {
+                archiveArtifacts artifacts: 'target/release/zed.exe', followSymlinks: false
+            }
+        }
+        stage('Execute Zed executable') {
+            steps {
+                script {
+                    def runZed = { bat "target/release/zed.exe" }.execute()
+                    runZed.waitFor()
+                    if (runZed.exitValue() != 0) {
+                        error "Zed execution failed"
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        error {
+            script {
+                currentBuild.result = 'FAILURE'
+                echo "Build failed"
+            }
+        }
+        success {
+            script {
+                currentBuild.result = 'SUCCESS'
+                echo "Build succeeded"
+            }
+        }
+    }
+}
