@@ -19,7 +19,7 @@ pipeline {
         }
         stage('store artifact') {
             steps {
-                archiveArtifacts artifacts: './target/release/zed.exe', followSymlinks: false
+                archiveArtifacts artifacts: 'target/release/zed.exe', followSymlinks: false
             }
         }
         stage('Execute Zed executable') {
