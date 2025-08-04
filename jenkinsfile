@@ -42,7 +42,7 @@ pipeline {
     }
 
     post {
-        error {
+        failure {
             script {
                 currentBuild.result = 'FAILURE'
                 echo "Build failed"
